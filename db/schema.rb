@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110209225607) do
+ActiveRecord::Schema.define(:version => 20110323162105) do
 
   create_table "microposts", :force => true do |t|
     t.string   "content"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(:version => 20110209225607) do
     t.integer  "recipient"
   end
 
+  add_index "microposts", ["recipient"], :name => "index_microposts_on_recipient"
   add_index "microposts", ["user_id"], :name => "index_microposts_on_user_id"
 
   create_table "relationships", :force => true do |t|
@@ -34,6 +35,16 @@ ActiveRecord::Schema.define(:version => 20110209225607) do
   add_index "relationships", ["user_id", "friend_id"], :name => "index_relationships_on_user_id_and_friend_id", :unique => true
   add_index "relationships", ["user_id"], :name => "index_relationships_on_user_id"
 
+  create_table "user_images", :force => true do |t|
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
+  end
+
   create_table "users", :force => true do |t|
     t.string   "name"
     t.string   "email"
@@ -42,7 +53,6 @@ ActiveRecord::Schema.define(:version => 20110209225607) do
     t.string   "encrypted_password"
     t.string   "salt"
     t.boolean  "admin",              :default => false
-    t.binary   "picture"
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"

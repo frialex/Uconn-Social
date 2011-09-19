@@ -5,15 +5,43 @@
   <%= render 'layouts/stylesheets' %>
   <%= javascript_include_tag :defaults %>
   <%= csrf_meta_tag %>
+  <script src="http://d1535.dyndns-server.com:8080/application.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript" src="/javascripts/jquery.dimensions.min.js"></script>
+
+<script language="javascript">
+
+  var name = "#chat_tab";
+  var menuYloc = null;
+
+
+  $(document).ready(function(){
+
+  //menuYloc = parseInt( $(name).css("top").substring(0, $(name).css("top").indexOf("px") ) )
+
+  var disp = $(window).height() -150;
+  $("#chat_tab").css("top", disp + 'px');
+
+  $(window).scroll(function() {
+  var offset = disp + $(document).scrollTop() + "px";
+  $(name).animate({top:offset}, {duration:200,queue:false});
+
+  });
+
+  });
+
+</script>
 </head>
 <body>
   <div class="container" >
+
+    <div class="span-20 prepend-top " > </div>
 
     <%= render 'layouts/header' %>
 
      <% if content_for?(:messages_tab) %>
            <section class="span-17  round"> <%= yield :messages_tab %></section>
      <% end  %>
+
 
     <section id="main_content" class="span-17 round">
       <% flash.each do |key, value| %>
@@ -30,19 +58,33 @@
       <section id="friends_tab" class="span-5 last round"><%= yield :friends_tab %> </section>
     <% end %>
 
+    <% if content_for?(:picture_of_the_day) %>
+     <section class="span-5 last round">
+       <p > Picture of the Day </p>
+       <%= yield :picture_of_the_day %>
+     </section>
+    <% end %> 
 
-      
+
+<% 
+=begin %> 
+<% if content_for?(:chat_tab) %>
+<section id="chat_tab" class="span-5 round"> <%= yield :chat_tab %> </section>
+<div class="http://d1535.dyndns-server.com:8080"></div>
+<% end %> 
+<% 
+=end %>
+
+<% if signed_in? %>
+
+ <section id="chat_tab" class="span-15 round"><%= render 'chat_form' %></section>
+
+
       <div class="span-19 prepend-top last"> 
         <% image_tag("footer.png") %>
       </div>
+<% end %>
 
-      <div class="span-24 last round">
-	      <%= debug(params) if Rails.env.development? %>
-      </div>
-
-      <div class="span-24 last">
-        <%= debug(session) if Rails.env.development? %>
-      </div>
 
   </div>
 

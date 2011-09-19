@@ -1,1 +1,19 @@
 Social Network site for uconn students
+
+
+1) start redis server
+   ~/apps/redis-2.2.2/src/redis-server
+
+2) start push server
+   cd ~/apps/juggernaut
+   sudo ~/apps/node/bin/node ~/apps/juggernaut/server.js 
+
+3) open console to project directory
+   
+   a) rake db:drop
+   b) rake db:migrate
+   c) rails s --debugger
+
+
+4) if not connecting 
+   sudo ddclient <--update ip address of push server

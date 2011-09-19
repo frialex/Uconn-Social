@@ -1,0 +1,41 @@
+<div id="incoming_msg"></div>
+
+<script type="text/javascript" charset="utf-8">
+  var jug = new Juggernaut();
+
+  jug.subscribe("/chat/<%= current_user.id %>", function(data){
+  var li = $("<li/>");
+  li.text(data);
+  $("#incoming_msg").append(li);
+});
+
+// make a request to db for params[:id], get random number generated
+// tell the recipient user, param[:id], of this number and have that user
+//suscribe to that number too
+
+<% if Integer(params[:id]) != current_user.id %>
+var jug2 = new Juggernaut();
+
+  jug2.subscribe("/chat/<%= params[:id] %>", function(data){
+  var li = $("<li/>");
+  li.text(data);
+  $("#incoming_msg").append(li);
+
+  var disp = $("#incoming_msg").scrollTop();
+  $("#incoming_msg").scrollTop(disp + 30);
+});
+
+<% end %>
+
+</script>
+
+
+<% form_tag('/chat/send', :id => 'chat_window', :remote => true) do %>
+
+<%= text_field_tag 'msg_body', '', :size => 15 %>
+<%= hidden_field_tag 'sender', current_user.name %>
+
+<%= hidden_field_tag 'recipient', params[:id] %>
+<%= submit_tag 'Send Message' %>
+
+<% end %>
