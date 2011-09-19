@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%=  title %></title>
+  <%= render 'layouts/stylesheets' %>
+  <%= javascript_include_tag :defaults %>
+  <%= csrf_meta_tag %>
+</head>
+<body>
+  <div class="container" >
+
+    <%= render 'layouts/header' %>
+
+     <% if content_for?(:messages_tab) %>
+           <section class="span-17  round"> <%= yield :messages_tab %></section>
+     <% end  %>
+
+    <section id="main_content" class="span-17 round">
+      <% flash.each do |key, value| %>
+      <div class="flash <%= key %>"> <%= value %> </div>
+      <% end %>
+      <%= yield %> 
+    </section>
+
+    <% if content_for?(:debug) %>
+      <section class="span-5 last"> Test: <%= yield :debug %> </section>      
+    <% end %>
+
+    <% if content_for?(:friends_tab) %>
+      <section id="friends_tab" class="span-5 last round"><%= yield :friends_tab %> </section>
+    <% end %>
+
+
+      
+      <div class="span-19 prepend-top last"> 
+        <% image_tag("footer.png") %>
+      </div>
+
+      <div class="span-24 last round">
+	      <%= debug(params) if Rails.env.development? %>
+      </div>
+
+      <div class="span-24 last">
+        <%= debug(session) if Rails.env.development? %>
+      </div>
+
+  </div>
+
+</body>
+</html>
